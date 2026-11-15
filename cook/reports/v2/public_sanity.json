@@ -1,0 +1,55 @@
+{
+  "purpose": "pipeline sanity check after external-only selection; not used to change or select models",
+  "release_sha256_before_check": "291b1cd836a390f60b710232338601aa726b47b279cdb475a4026528e1077164",
+  "scores": {
+    "baseline_raw": {
+      "spell_f1_mean": 0.03783783783783784,
+      "macro_f1": 0.5972272933830406,
+      "spell_bootstrap_low": 0.01891891891891892,
+      "spell_bootstrap_high": 0.05945945945945948,
+      "n_pred_spells": 131
+    },
+    "baseline_smooth25": {
+      "spell_f1_mean": 0.28679245283018867,
+      "macro_f1": 0.6199906269077847,
+      "spell_bootstrap_low": 0.19622641509433963,
+      "spell_bootstrap_high": 0.3849056603773585,
+      "n_pred_spells": 36
+    },
+    "baseline_smooth50": {
+      "spell_f1_mean": 0.3255813953488372,
+      "macro_f1": 0.6207331924027959,
+      "spell_bootstrap_low": 0.21395348837209305,
+      "spell_bootstrap_high": 0.44651162790697674,
+      "n_pred_spells": 26
+    },
+    "baseline_smooth125": {
+      "spell_f1_mean": 0.4242424242424242,
+      "macro_f1": 0.5811854685843337,
+      "spell_bootstrap_low": 0.26666666666666666,
+      "spell_bootstrap_high": 0.593939393939394,
+      "n_pred_spells": 16
+    },
+    "v9": {
+      "spell_f1_mean": 0.4352941176470588,
+      "macro_f1": 0.6913434795658597,
+      "spell_bootstrap_low": 0.29411764705882354,
+      "spell_bootstrap_high": 0.5764705882352941,
+      "n_pred_spells": 17
+    },
+    "cook_v1": {
+      "spell_f1_mean": 0.5529411764705883,
+      "macro_f1": 0.7968919596121946,
+      "spell_bootstrap_low": 0.38764705882352946,
+      "spell_bootstrap_high": 0.7176470588235293,
+      "n_pred_spells": 17
+    },
+    "BarcelonAI": {
+      "spell_f1_mean": 0.5621621621621622,
+      "macro_f1": 0.7988724292718601,
+      "spell_bootstrap_low": 0.4108108108108109,
+      "spell_bootstrap_high": 0.7027027027027027,
+      "n_pred_spells": 20
+    }
+  }
+}

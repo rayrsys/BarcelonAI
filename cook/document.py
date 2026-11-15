@@ -38,11 +38,12 @@ def main():
     while i<len(lines):
         line=lines[i].strip();i+=1
         if not line:continue
-        if line in ('## Why the new method helps','## Technical details and data sources'):flow.append(PageBreak())
+        if line in ('## Benchmarks and our results','## Testing on different matches','## Technical details and reproduction'):flow.append(PageBreak())
         if line.startswith('# '):
             flow.append(Paragraph(inline(line[2:]),st['title']))
             flow.append(Paragraph('The task, the results and how to reproduce them.',st['small']))
         elif line.startswith('## '):flow.append(Paragraph(inline(line[3:]),st['h2']))
+        elif line.startswith('### '):flow.append(Paragraph(inline(line[4:]),st['h2']))
         elif line.startswith('|'):
             rows=[line]
             while i<len(lines) and lines[i].startswith('|'):rows.append(lines[i]);i+=1
@@ -52,7 +53,7 @@ def main():
                 if all(re.fullmatch(r':?-+:?',b) for b in bits):continue
                 style=st['head'] if not cells else st['cell']
                 cells.append([Paragraph(inline(b),style) for b in bits])
-            widths=[210,151,150] if 'Method' in rows[0] else [105,165,241]
+            widths=[187,108,108,108] if len(cells[0])==4 else [245,133,133]
             t=Table(cells,colWidths=widths,hAlign='LEFT',repeatRows=1)
             t.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),INK),('BACKGROUND',(0,1),(-1,-1),PALE),
                 ('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),9),('RIGHTPADDING',(0,0),(-1,-1),9),

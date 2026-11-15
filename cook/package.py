@@ -10,7 +10,8 @@ def main():
     for folder in ('cook','mtah','starter','evaluation'):
         paths.extend((ROOT/folder).glob('*.py'))
     paths += [ROOT/'cook/viewer_template.html',ROOT/'mtah/viewer_template.html']
-    paths += [p for p in (ROOT/'cook/reports').glob('*.json') if p.name != 'package_manifest.json']
+    paths += [p for p in (ROOT/'cook/reports').rglob('*.json') if p.name != 'package_manifest.json']
+    paths += list((ROOT/'cook/reports').rglob('protocol.md'))
     paths += list((ROOT/'models').glob('*'))
     paths.append(ROOT/'output/pdf/BarcelonAI.pdf')
     for name in ('games.py','requirements-cook.txt','requirements.txt','requirements-mtah.txt',

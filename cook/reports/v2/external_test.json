@@ -1,0 +1,76 @@
+{
+  "matches": [
+    {
+      "match": "J03WOY",
+      "v1": {
+        "macro_f1": 0.8846448301934129,
+        "spell_f1_mean": 0.5582245430809399,
+        "n_gt_spells": 456,
+        "n_pred_spells": 310,
+        "spell_bootstrap_low": 0.5206005221932115,
+        "spell_bootstrap_high": 0.6015926892950391,
+        "team_acc_gt_alive": 0.8440867262669428,
+        "alive_dead_f1": 0.9620997403008291
+      },
+      "v2": {
+        "macro_f1": 0.8954528429940453,
+        "spell_f1_mean": 0.596291718170581,
+        "n_gt_spells": 456,
+        "n_pred_spells": 353,
+        "spell_bootstrap_low": 0.5595797280593324,
+        "spell_bootstrap_high": 0.6338936959208901,
+        "team_acc_gt_alive": 0.8685997430721233,
+        "alive_dead_f1": 0.9702548378924393
+      },
+      "reference_v9": {
+        "macro_f1": 0.6372153054207775,
+        "spell_f1_mean": 0.25953757225433527,
+        "n_gt_spells": 456,
+        "n_pred_spells": 236,
+        "spell_bootstrap_low": 0.22653179190751443,
+        "spell_bootstrap_high": 0.293121387283237,
+        "team_acc_gt_alive": 0.5311721678945023,
+        "alive_dead_f1": 0.7100431335975752
+      }
+    },
+    {
+      "match": "J03WR9",
+      "v1": {
+        "macro_f1": 0.8918461008478445,
+        "spell_f1_mean": 0.5372488408037095,
+        "n_gt_spells": 370,
+        "n_pred_spells": 277,
+        "spell_bootstrap_low": 0.49644513137557966,
+        "spell_bootstrap_high": 0.5830602782071097,
+        "team_acc_gt_alive": 0.8652773219560224,
+        "alive_dead_f1": 0.9596952335951805
+      },
+      "v2": {
+        "macro_f1": 0.9084413664772778,
+        "spell_f1_mean": 0.5916913946587536,
+        "n_gt_spells": 370,
+        "n_pred_spells": 304,
+        "spell_bootstrap_low": 0.5535014836795253,
+        "spell_bootstrap_high": 0.6344510385756676,
+        "team_acc_gt_alive": 0.8830465563317549,
+        "alive_dead_f1": 0.9703616305822665
+      },
+      "reference_v9": {
+        "macro_f1": 0.5448793153981758,
+        "spell_f1_mean": 0.19731543624161071,
+        "n_gt_spells": 370,
+        "n_pred_spells": 226,
+        "spell_bootstrap_low": 0.16640939597315438,
+        "spell_bootstrap_high": 0.2275167785234899,
+        "team_acc_gt_alive": 0.5370153312391579,
+        "alive_dead_f1": 0.6430043563166591
+      }
+    }
+  ],
+  "mean_spellF1": {
+    "v1": 0.5477366919423248,
+    "v2": 0.5939915564146674,
+    "reference_v9": 0.228426504247973
+  },
+  "v2_wins_both": true
+}

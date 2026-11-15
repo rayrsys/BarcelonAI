@@ -1,85 +1,106 @@
 # BarcelonAI
 
-## What we are trying to do
+## What the project does
 
-In football, two teams try to move a ball towards the other team's goal. A team has **possession** when it controls the ball. Control can continue while the ball travels between teammates. When play stops, for example because the ball goes out of bounds, neither team has a live possession.
+In football, two teams try to move a ball towards the other team's goal. A team has **possession** when it controls the ball. Control can continue while the ball travels between teammates. When the referee stops play, neither team has a live possession.
 
-The challenge is to identify who has possession, or whether play has stopped, at every moment of one match. Our output contains 199,319 labels: one for each video frame, recorded 25 times per second. H means the home team; A means the away team; D means stopped play; X marks periods outside our labelled halves.
+This challenge asks us to identify which team controls the ball, or whether play has stopped, at every moment of a match. We produce 199,319 labels: one for each video frame, recorded 25 times per second. H means the home team, A the away team, D stopped play, and X periods outside the halves we label.
 
-The organisers provide automatically measured player and ball positions. The ball is missing from **40.7%** of the frames that count towards the score. A missing measurement does not mean the game stopped. The camera or tracking system may simply have lost sight of the ball.
+The organisers provide automatically measured player and ball positions. They also provide a simple reference method, called a **baseline**, so teams can measure whether their approach is an improvement. The baseline mostly picks the team with the player closest to the ball. Smoothed versions combine nearby decisions to reduce rapid switching.
 
-Our method uses player movement, available ball observations, and evidence before and after a gap to estimate the state of play.
+The difficulty is that the ball is missing from **40.7%** of scored frames. Our analysis found that 99.7% of this missing time is in gaps longer than five seconds. A missing ball measurement does not mean the game stopped: the tracking system may simply have lost sight of it.
 
-## How well does it work?
+## Our two methods
 
-The main score is **spellF1**. A spell is one continuous period in which a team controls the ball. The score rewards recovering these periods, including their timing, without inventing extra possessions. Higher is better; 1.0 is perfect. It is not the percentage of individual frames labelled correctly.
+**Method 1: infer the state from tracking and movement.** The v9 system combines ball-to-player distance, team shape, player movement and automatic restart detectors. It learns some patterns from confident, algorithm-generated examples in the unlabelled match. A state model then favours consistent periods of control over unsupported moment-to-moment switches. It can borrow ball observations from the second camera when automatic alignment verifies them.
 
-The organisers' baseline mostly chooses the team with the player closest to the ball, then smooths its decisions over time. We compare it with our previous v9 system and the new BarcelonAI model.
+**Method 2: learn from labelled examples in other matches.** The new model learns how tracking patterns relate to possession and stopped play from four public German league matches. We deliberately hide observations during training so it practises dealing with imperfect tracking. It considers player movement and credible control before and after a gap, then chooses a consistent sequence of states.
 
-| Method | Public five-minute check | Separate external test |
+The methods share tracking-feature code, but use different learning approaches. **The final Method 2 does not blend in Method 1's predictions.** An earlier prototype did; the final configuration was chosen on a separate external development match. Method 2 is the recommended submission.
+
+## How to read the scores
+
+**spellF1** is the main ranking score. A spell is one continuous period of team control. The score rewards finding these periods with the right timing, without inventing too many extra possessions. **macroF1** measures individual frame labels while giving the three states equal weight. Both range up to 1.0; higher is better. Neither should be read as a simple percentage accuracy.
+
+## Benchmarks and our results
+
+### 1. The organisers' published full-match benchmarks
+
+These are reproduced as published in EVALUATION.md. They use the organisers' private full-match answer key. **Our scores on that answer key are not available.**
+
+| Published baseline | spellF1 | macroF1 |
 |---|---:|---:|
-| Organisers' baseline (smooth50) | 0.3256 | 0.1735 |
-| Previous model v9 | 0.4353 | 0.2470 |
-| **BarcelonAI** | **0.5529** | **0.5279** |
+| Raw | 0.0486 | 0.6532 |
+| smooth25 | 0.1996 | 0.6752 |
+| smooth50 - official floor | 0.2433 | 0.6724 |
+| smooth125 | 0.2242 | 0.6356 |
 
-Compare methods **within each column**. The columns describe different tests. On the external test, the new model also improved the score for individual frame labels, macroF1, from 0.6252 to 0.8864 compared with v9.
+### 2. A like-for-like check on the public five minutes
 
-The public sample was checked only after fixing the model; it did not choose our settings. It contains just 17 possessions, and the old and new models' uncertainty intervals overlap. The external match was kept aside until the model was fixed. All methods received the same simulated tracking loss; v9 could not use its optional second camera because none was supplied for that match.
+Every row below uses the same public sample and the unchanged official scorer. We checked our completed pipelines only after fixing their settings. These public scores did not select our models.
 
-The organisers' published **private full-match baseline is 0.2433**. Our score on that private test is unavailable. We do not claim to know the official competition ranking.
+| Method | spellF1 | macroF1 |
+|---|---:|---:|
+| Official: raw | 0.0378 | 0.5972 |
+| Official: smooth25 | 0.2868 | 0.6200 |
+| Official: smooth50 | 0.3256 | 0.6207 |
+| Official: smooth125 | 0.4242 | 0.5812 |
+| Method 1: state model | 0.4353 | 0.6913 |
+| Method 2: learned model | 0.5622 | 0.7989 |
 
-## Why the new method helps
+Both methods score above the supplied baselines on this sample. Method 1's spellF1 gain over the strongest public baseline is small: 0.0111. Method 2 improves on Method 1 by 0.1269 and on smooth50 by 0.2366. These are differences in score, not percentage-point accuracy gains.
 
-**Learn from other matches.** We use two public German league matches with existing possession and play-status labels. The model learns relationships between ball proximity, player movement and the state of play. No human labels from the competition match train this classifier.
+There are only 17 true possessions in the public sample. Uncertainty is wide and the models' intervals overlap. The public sample cannot establish the private ranking. Do not compare our public scores directly with the private scores in the first table.
 
-**Practise with missing information.** We hide ball observations for varying lengths of time, remove some player observations and add small position errors. Gap lengths come from the unlabelled competition tracking. The corruption process never reads possession labels. This matters because 99.7% of missing-ball time in the competition data lies in gaps longer than five seconds.
+## Testing on different matches
 
-**Use evidence across time.** If the same team controls the ball before and after a gap, that supports continued possession. It is evidence, not a guarantee: player movement and other observations also matter. Since the full recording is available, the method can look backwards and forwards.
+To obtain stronger evidence, we set aside two other matches before evaluating the final learned model. We removed ball observations in stretches, dropped some player tracks and added small position errors. This makes the test harder, although it cannot reproduce every real tracking failure. Every method received the same degraded tracking. Method 1's optional broadcast borrowing was disabled because these matches have no second-camera asset.
 
-**Separate a hidden ball from stopped play.** Players often move differently when the game pauses. Those patterns help the model avoid labelling every missing-ball interval as a stoppage.
+| Method | Test 1 spellF1 | Test 2 spellF1 | Mean macroF1 |
+|---|---:|---:|---:|
+| Official: smooth50 | 0.1812 | 0.1381 | 0.4371 |
+| Method 1 | 0.2595 | 0.1973 | 0.5910 |
+| Method 2 | 0.5963 | 0.5917 | 0.9019 |
 
-**Make a consistent sequence.** We combine 75% of the new model's probabilities with 25% from the previous v9 system. A final decoding step discourages rapid, unsupported switches. A brief touch by an opponent need not become a new possession.
+Test 1 is J03WOY; Test 2 is J03WR9. The mean is an equal-weight average across matches. Method 2's mean spellF1 is **0.5940**, compared with **0.2284** for Method 1. It also improves on our earlier learned prototype on both matches: 0.5582 to 0.5963 and 0.5372 to 0.5917. The prototype's mean macroF1 was 0.8882; the final learned model reaches 0.9019.
 
-## How we tested it
+### What improved, and what remains difficult?
 
-| Stage | Match IDs | Purpose |
-|---|---|---|
-| Training | J03WPY, J03WN1 | Learn the model and state-change rates |
-| Development | J03WMX | Choose from 24 configurations |
-| Untouched test | J03WOH | Evaluate the fixed model |
-| Competition sample | Public five minutes | Check the completed pipeline only |
+Our earlier prototype handled long possessions better than short ones. We investigated finer time context, more training matches, and extra weighting for short possessions. The development test selected a model with more data and finer context; the extra weighting was not selected. This distinction matters: we report what the tests supported, not every idea we tried.
 
-We used the organisers' unchanged scoring code. The external test contains 402 true possessions; BarcelonAI predicted 264. The improved score therefore does not mean the task is solved. Short or ambiguous possessions remain difficult.
+The final model still misses possessions. It predicts 353 where Test 1 has 456, and 304 where Test 2 has 370. Short control changes, deflections and ambiguous stoppages remain difficult. Improvement does not mean the task is solved.
 
-The external test's within-match spellF1 bootstrap intervals are 0.485–0.572 for BarcelonAI and 0.213–0.287 for v9. They do not measure uncertainty across different matches or data providers. Only one external match was reserved for final testing. Simulated errors cannot reproduce every real camera failure, and possession definitions may vary between providers. The model also uses future observations, so it is intended for completed matches, not strictly live use.
+### How we kept the comparison fair
 
-## Technical details and data sources
+Method 2 trained on J03WPY, J03WN1, J03WMX and J03WOH. J03WQQ selected one of 36 configurations. J03WOY and J03WR9 were untouched until the configuration was fixed. A predeclared rule promoted the candidate only if it beat the frozen earlier prototype on both tests. No weights were refitted using those test results. One public sanity check followed selection and did not change the recommendation.
 
-The new component is a **histogram gradient-boosted classifier**: a learned collection of small decision trees. It uses 100 features covering ball proximity, previous and next credible control, player movement, team shape and short time windows. The selected model has 220 iterations, learning rate 0.06, at most 15 leaves per tree, minimum 60 samples per leaf and regularization 8.
+The earlier prototype's original external test later became part of Method 2 training. We therefore do not reuse that earlier score as independent evidence about the final model. The report's final comparison uses only the two new tests.
 
-The training matches contain 287,772 labelled frames. Sampling every fifth frame, two fixed sensor corruptions and home/away exchange augmentation produce 230,224 training rows; these are not independent observations. The v9 component uses a Hidden Markov Model, which combines evidence with the tendency for a state to persist, plus algorithm-generated shape labels and automatic stoppage/restart detectors. A final Viterbi decoder finds a consistent H/A/D sequence. Each half is processed separately. All output is generated by code, without hand corrections.
+## Technical details and reproduction
 
-The new classifier uses tactical tracking. The v9 component can borrow broadcast ball observations after automatic alignment checks. Video is only used in the private viewer. Homography is not used. Automatic tactical tags were explored but excluded because reliability varied and the external matches have no equivalent tags.
+Method 1 uses a three-state Hidden Markov Model, which combines evidence with the tendency for a state to persist. It also uses algorithm-generated shape labels and automatic gap/restart detectors. Method 2 uses a histogram gradient-boosted classifier, a learned collection of small decision trees, followed by Viterbi sequence decoding.
 
-External data: Bassek, Rein, Weber and Memmert (2025), *An integrated dataset of spatiotemporal and event data in elite soccer*. The dataset supplies BallPossession and BallStatus labels; our team did not annotate those matches. Our changes comprise parsing, unit conversion, simulated errors, feature extraction and training. [Paper](https://doi.org/10.1038/s41597-025-04505-y), [dataset](https://doi.org/10.6084/m9.figshare.28196177), [CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/).
+The selected classifier has 120 features, 300 iterations, learning rate 0.06, at most 15 leaves per tree, minimum 60 samples per leaf and regularization 8. Features describe ball proximity, previous and next credible control, player movement, team shape and short time windows. Two fixed corruptions and home/away exchange augmentation produce 456,772 training rows; these are correlated examples, not independent observations. State-change probabilities are learned from the external training labels. Each half is decoded separately.
 
-## Reproducing the submission
+The final learned model uses **tactical tracking only**. It does not need broadcast video, broadcast tracking, homography or tactical tags. Method 1's optional broadcast tracking and the private video viewer remain available for comparison. Tactical tags were explored but excluded from the final model. All labels are generated by code; there are no manual corrections or rules tied to particular match frames.
 
-Code: [github.com/rayrsys/BarcelonAI](https://github.com/rayrsys/BarcelonAI). The repository includes the selected model, exact package versions and full technical notes. Supply the private competition tracking separately in the documented data folder. Video is not needed for inference.
+External data: Bassek, Rein, Weber and Memmert (2025), *An integrated dataset of spatiotemporal and event data in elite soccer*. BallPossession and BallStatus are existing provider labels; our team did not annotate these matches. We parse and normalize the data, simulate tracking errors, extract features and fit the model. [Paper](https://doi.org/10.1038/s41597-025-04505-y), [dataset](https://doi.org/10.6084/m9.figshare.28196177), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Code and selected model: [github.com/rayrsys/BarcelonAI](https://github.com/rayrsys/BarcelonAI). Put the licensed tactical ATD assets in the documented data folder, then run:
 
 ```bash
 python3.13 -m venv .venv-barcelonai
 .venv-barcelonai/bin/python -m pip install -r requirements-cook.txt
-OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 \
-  .venv-barcelonai/bin/python -m cook.train --stage predict
-.venv-barcelonai/bin/python evaluation/validate_submission.py \
-  evaluation/results/BarcelonAI.csv
+OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1   .venv-barcelonai/bin/python -m cook.submit
+.venv-barcelonai/bin/python evaluation/validate_submission.py   evaluation/results/BarcelonAI.csv
 ```
 
-The CSV passes the official 199,319-row validator. Repeated runs produce identical bytes. A fresh rebuild of all inherited caches from raw assets reproduced every prediction. Five integrity checks cover label-independent corruption, team exchange, feature/target separation, halftime boundaries and score mapping.
+The 199,319-row CSV passes the official validator. Regenerating it from raw inputs, a fresh cache and the distributed pretrained model reproduces the exact file. Integrity tests cover corruption independence, team exchange, target/feature separation, halftime boundaries and score mapping.
 
-Expected CSV SHA-256: `05a2f57cbc7faa660ae0660c80e6b5d7e12b12af3aede25c2ff31d53aec33432`.
+Expected CSV SHA-256: `08ea56a775c69c5f214fc6b99e9e6b1a238e6729504ee72e49046094b4a5fa10`.
+
+**Limits:** only two external matches provide the final test; clubs may overlap across different matches. Real camera errors and providers' definitions of control may differ. Future observations are used, so the method is for completed matches, not strictly live prediction. The private competition score remains unknown.
 
 **Team:** Sayfullah Jumoorty, Hamdullah Dadabhoy, Muaaz Bassa, Rayhaan Hanslod and Muzzimmil Sakidas.
 
-Prepared for More than a Hack 2027, Phase 1. Implementation details and retraining commands are in TECHNICAL_DOCUMENT.md.
+Prepared for More than a Hack 2027, Phase 1. Further implementation detail is in TECHNICAL_DOCUMENT.md.

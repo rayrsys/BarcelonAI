@@ -1,0 +1,86 @@
+{
+  "J03WOY": {
+    "baseline_raw": {
+      "macro_f1": 0.43855937496748854,
+      "spell_f1_mean": 0.06423076923076923,
+      "n_gt_spells": 456,
+      "n_pred_spells": 1624,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.4536350051123404,
+      "alive_dead_f1": 0.5997348587140647
+    },
+    "baseline_smooth25": {
+      "macro_f1": 0.4526660012844533,
+      "spell_f1_mean": 0.15669362084456423,
+      "n_gt_spells": 456,
+      "n_pred_spells": 657,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.5081273103846053,
+      "alive_dead_f1": 0.6161236127872032
+    },
+    "baseline_smooth50": {
+      "macro_f1": 0.4566495329658098,
+      "spell_f1_mean": 0.18124341412012646,
+      "n_gt_spells": 456,
+      "n_pred_spells": 493,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.5504548672102352,
+      "alive_dead_f1": 0.6300287233252816
+    },
+    "baseline_smooth125": {
+      "macro_f1": 0.434197738730222,
+      "spell_f1_mean": 0.15458937198067632,
+      "n_gt_spells": 456,
+      "n_pred_spells": 372,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.6167055554099048,
+      "alive_dead_f1": 0.6589633022222456
+    }
+  },
+  "J03WR9": {
+    "baseline_raw": {
+      "macro_f1": 0.40371138489875097,
+      "spell_f1_mean": 0.053253012048192785,
+      "n_gt_spells": 370,
+      "n_pred_spells": 1290,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.40652398143372875,
+      "alive_dead_f1": 0.5474716110189101
+    },
+    "baseline_smooth25": {
+      "macro_f1": 0.4141919548796405,
+      "spell_f1_mean": 0.1260153677277717,
+      "n_gt_spells": 370,
+      "n_pred_spells": 541,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.4530217075343429,
+      "alive_dead_f1": 0.5669843017188986
+    },
+    "baseline_smooth50": {
+      "macro_f1": 0.4175596113242575,
+      "spell_f1_mean": 0.13810110974106043,
+      "n_gt_spells": 370,
+      "n_pred_spells": 441,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.4908926813258943,
+      "alive_dead_f1": 0.586713457025196
+    },
+    "baseline_smooth125": {
+      "macro_f1": 0.41370013638114306,
+      "spell_f1_mean": 0.15417298937784524,
+      "n_gt_spells": 370,
+      "n_pred_spells": 289,
+      "spell_bootstrap_low": null,
+      "spell_bootstrap_high": null,
+      "team_acc_gt_alive": 0.5757185053213935,
+      "alive_dead_f1": 0.6334937979165075
+    }
+  }
+}

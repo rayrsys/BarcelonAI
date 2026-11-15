@@ -24,7 +24,7 @@ class Handler(SimpleHTTPRequestHandler):
                    path == ROOT/'deliverables/BarcelonAI_source.zip' or
                    path == ROOT/'data/broadcast/BAR-ATH_broadcast.mp4' or
                    path == ROOT/'SUBMISSION_READY.md' or path == ROOT/'TECHNICAL_DOCUMENT.md')
-        allowed = allowed or path == ROOT/'BarcelonAI.md'
+        allowed = allowed or path in (ROOT/'BarcelonAI.md', ROOT/'output/pdf/BarcelonAI.pdf')
         if not allowed or not path.is_file():
             self.send_error(404); return None
         size = path.stat().st_size
