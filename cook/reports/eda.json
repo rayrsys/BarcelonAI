@@ -1,0 +1,113 @@
+{
+  "graded_frames": 158857,
+  "missing_ball_fraction": 0.40692572565263097,
+  "gap_count": 150,
+  "median_gap_seconds": 10.72,
+  "missing_time_in_gaps_over_5s": 0.9969524929226675,
+  "pseudo_label_frames": 18201,
+  "clear_touch_clusters": 579,
+  "tag_counts": {
+    "SET PIECES": 59,
+    "PLAYERS IN THE BOX": 97,
+    "BALL IN FINAL THIRD": 93,
+    "BALL IN THE BOX": 72,
+    "GOALS": 4,
+    "PROGRESSION": 66,
+    "ATTACKING TRANSITION": 24,
+    "BUILD UP": 22,
+    "LONG BALL": 29,
+    "CREATING CHANCES": 30,
+    "DEFENDING IN MIDDLE THIRD": 66,
+    "DEFENSIVE TRANSITION": 24,
+    "DEFENDING IN ATTACKING THIRD": 22,
+    "DEFENDING IN DEFENSIVE THIRD": 30
+  },
+  "tags": {
+    "ATTACKING TRANSITION": {
+      "coverage": 0.03194067620564407,
+      "pseudo_n": 912,
+      "touch_agreement": 0.7587719298245614
+    },
+    "BALL IN FINAL THIRD": {
+      "coverage": 0.219083830111358,
+      "pseudo_n": 5114,
+      "touch_agreement": 0.8030895580758701
+    },
+    "BALL IN THE BOX": {
+      "coverage": 0.10238768200331115,
+      "pseudo_n": 2130,
+      "touch_agreement": 0.6779342723004694
+    },
+    "BUILD UP": {
+      "coverage": 0.04909446861013364,
+      "pseudo_n": 1602,
+      "touch_agreement": 0.9257178526841449
+    },
+    "CREATING CHANCES": {
+      "coverage": 0.08970331807852346,
+      "pseudo_n": 1609,
+      "touch_agreement": 0.6743318831572406
+    },
+    "DEFENDING IN ATTACKING THIRD": {
+      "coverage": 0.020219442643383673,
+      "pseudo_n": 922,
+      "touch_agreement": 0.9793926247288504
+    },
+    "DEFENDING IN DEFENSIVE THIRD": {
+      "coverage": 0.04176082892160874,
+      "pseudo_n": 592,
+      "touch_agreement": 0.597972972972973
+    },
+    "DEFENDING IN MIDDLE THIRD": {
+      "coverage": 0.05068080097194332,
+      "pseudo_n": 1600,
+      "touch_agreement": 0.78875
+    },
+    "DEFENSIVE TRANSITION": {
+      "coverage": 0.02654588718155322,
+      "pseudo_n": 800,
+      "touch_agreement": 0.74875
+    },
+    "GOALS": {
+      "coverage": 0.0,
+      "pseudo_n": 0,
+      "touch_agreement": null
+    },
+    "LONG BALL": {
+      "coverage": 0.020918184278942698,
+      "pseudo_n": 534,
+      "touch_agreement": 0.7303370786516854
+    },
+    "PLAYERS IN THE BOX": {
+      "coverage": 0.2675676866615887,
+      "pseudo_n": 4626,
+      "touch_agreement": 0.6351059230436662
+    },
+    "PROGRESSION": {
+      "coverage": 0.14520606583279302,
+      "pseudo_n": 5276,
+      "touch_agreement": 0.883434420015163
+    },
+    "SET PIECES": {
+      "coverage": 0.0,
+      "pseudo_n": 0,
+      "touch_agreement": null
+    }
+  },
+  "combined_tags": {
+    "coverage": 0.54184581101242,
+    "coverage_missing_ball": 0.3896168185263679,
+    "touch_agreement": 0.8018632129061577,
+    "conflicting_coverage": 0.03395506650635477
+  },
+  "half_profiles": {
+    "1": {
+      "missing_ball": 0.406508361961569,
+      "median_players": 21.0
+    },
+    "2": {
+      "missing_ball": 0.40734349414283916,
+      "median_players": 22.0
+    }
+  }
+}

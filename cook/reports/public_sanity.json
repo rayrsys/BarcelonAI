@@ -1,0 +1,35 @@
+{
+  "purpose": "alignment/format check only; not used for model selection",
+  "config_sha256": "ef3d2ba0f38f46df06ecf1f1cffe3ab8889b876baf7b9558b84f2a424abe151f",
+  "scores": {
+    "baseline_smooth50": {
+      "macro_f1": 0.6207331924027959,
+      "spell_f1_mean": 0.3255813953488372,
+      "spell_bootstrap_low": 0.21395348837209305,
+      "spell_bootstrap_high": 0.44651162790697674,
+      "n_pred_spells": 26
+    },
+    "baseline_smooth125": {
+      "macro_f1": 0.5811854685843337,
+      "spell_f1_mean": 0.4242424242424242,
+      "spell_bootstrap_low": 0.26666666666666666,
+      "spell_bootstrap_high": 0.593939393939394,
+      "n_pred_spells": 16
+    },
+    "v9": {
+      "macro_f1": 0.6913434795658597,
+      "spell_f1_mean": 0.4352941176470588,
+      "spell_bootstrap_low": 0.29411764705882354,
+      "spell_bootstrap_high": 0.5764705882352941,
+      "n_pred_spells": 17
+    },
+    "cook_v1": {
+      "macro_f1": 0.7968919596121946,
+      "spell_f1_mean": 0.5529411764705883,
+      "spell_bootstrap_low": 0.38764705882352946,
+      "spell_bootstrap_high": 0.7176470588235293,
+      "n_pred_spells": 17
+    }
+  },
+  "regenerated_reference_agreement_with_saved_v9": 1.0
+}

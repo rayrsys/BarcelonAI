@@ -1,0 +1,13 @@
+{
+  "team": "BarcelonAI",
+  "submission": "evaluation/results/BarcelonAI.csv",
+  "sha256": "05a2f57cbc7faa660ae0660c80e6b5d7e12b12af3aede25c2ff31d53aec33432",
+  "model_sha256": "84ff289b0c097b8b5db13214b4581b68ea41646162d08932daed4281aabbac9e",
+  "possessions": 331,
+  "label_counts": {
+    "H": 56977,
+    "A": 36360,
+    "D": 65520,
+    "X": 40462
+  }
+}

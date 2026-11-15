@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Possession model: live view</title>
+<style>
+body{margin:0;background:#10231B;color:#F6F4EC;font-family:-apple-system,Helvetica,Arial,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:16px}
+video{width:100%;background:#000;border-radius:8px;display:block}
+.row{display:flex;gap:12px;margin:12px 0;align-items:stretch}
+.badge{flex:1;border-radius:10px;padding:14px 18px;font-size:28px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.badge small{font-size:14px;font-weight:600;opacity:.85;text-transform:uppercase;letter-spacing:.08em}
+.H{background:#2F6DB5;color:#fff}.A{background:#B93A1F;color:#fff}.D{background:#A9ADA3;color:#10231B}.Q{background:#2A3B33;color:#C9D6CE}
+.lab{font-size:13px;color:#C9D6CE;margin:10px 0 4px;text-transform:uppercase;letter-spacing:.08em}
+canvas{width:100%;height:44px;border-radius:6px;display:block;cursor:pointer}
+.info{font-size:15px;color:#C9D6CE;line-height:1.5;margin-top:14px}
+.keys span{display:inline-block;padding:2px 10px;border-radius:5px;margin-right:8px;font-weight:600;font-size:13px}
+button{background:#1A3529;color:#F6F4EC;border:1px solid #2F5241;border-radius:6px;padding:8px 12px;font-size:14px;cursor:pointer}
+</style></head><body><div class="wrap">
+<video id="v" src="../broadcast/BAR-ATH_broadcast.mp4" controls preload="metadata"></video>
+<div class="row">
+ <div id="bm" class="badge Q"><span id="tm">no sync</span><small>our model</small></div>
+ <div id="bb" class="badge Q"><span id="tb">no sync</span><small>organisers' baseline</small></div>
+</div>
+<div class="row"><button id="prev">◀ previous change</button><button id="next">next change ▶</button><button id="slow">half speed</button>
+ <span class="info" id="clock" style="margin:0 0 0 auto;align-self:center"></span></div>
+<div class="lab">Our model: 90 seconds around now (line = now)</div><canvas id="c1" width="1248" height="44"></canvas>
+<div class="lab">Organisers' baseline: same window</div><canvas id="c2" width="1248" height="44"></canvas>
+<div class="lab">Whole video, our model (click to jump)</div><canvas id="c3" width="1248" height="44"></canvas>
+<div class="info keys"><span class="H">Barcelona</span><span class="A">Athletic</span><span class="D">Dead ball</span><span class="Q">No sync (replay, close-up or outside play)</span></div>
+<div class="info">The call can be judged only while the picture shows live wide play. During replays and close-ups the TV feed is not showing the present moment, so the label there means nothing. Watching is for understanding the model; the rules do not allow correcting its output by hand.</div>
+</div><script>
+const DATA=/*DATA*/;
+const v=document.getElementById('v'),COL={H:'#2F6DB5',A:'#B93A1F',D:'#A9ADA3','?':'#2A3B33'},NAME={H:'Barcelona',A:'Athletic',D:'Dead ball','?':'no sync'};
+function at(r,f){let lo=0,hi=r.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(r[m][0]<=f)lo=m;else hi=m-1}return lo}
+function strip(c,r,f0,f1,now){const x=c.getContext('2d'),W=c.width,H=c.height;x.clearRect(0,0,W,H);let i=at(r,Math.max(0,f0));
+ for(;i<r.length&&r[i][0]<f1;i++){const a=Math.max(r[i][0],f0),b=Math.min(i+1<r.length?r[i+1][0]:DATA.n,f1);x.fillStyle=COL[r[i][1]];x.fillRect((a-f0)/(f1-f0)*W,0,Math.max(1,(b-a)/(f1-f0)*W),H)}
+ if(now!=null){x.fillStyle='#F6F4EC';x.fillRect((now-f0)/(f1-f0)*W-1,0,2,H)}}
+function badge(el,tx,l){el.className='badge '+(l==='?'?'Q':l);tx.textContent=NAME[l]}
+function fmt(s){s=Math.floor(s);return Math.floor(s/3600)+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function draw(){const f=Math.min(DATA.n-1,Math.floor(v.currentTime*DATA.fps));
+ badge(document.getElementById('bm'),document.getElementById('tm'),DATA.model[at(DATA.model,f)][1]);
+ badge(document.getElementById('bb'),document.getElementById('tb'),DATA.base[at(DATA.base,f)][1]);
+ strip(document.getElementById('c1'),DATA.model,f-1125,f+1125,f);strip(document.getElementById('c2'),DATA.base,f-1125,f+1125,f);
+ strip(document.getElementById('c3'),DATA.model,0,DATA.n,f);document.getElementById('clock').textContent=fmt(v.currentTime)+'  ·  model '+DATA.modelName;
+ requestAnimationFrame(draw)}
+document.getElementById('c3').onclick=e=>{const r=e.target.getBoundingClientRect();v.currentTime=(e.clientX-r.left)/r.width*DATA.n/DATA.fps};
+function jump(d){const f=Math.floor(v.currentTime*DATA.fps),r=DATA.model;let i=at(r,f);
+ for(i+=d;i>=0&&i<r.length;i+=d){if(r[i][1]!=='?'&&(d>0||r[i][0]<f-25)){v.currentTime=Math.max(0,r[i][0]/DATA.fps-2);return}}}
+document.getElementById('next').onclick=()=>jump(1);document.getElementById('prev').onclick=()=>jump(-1);
+document.getElementById('slow').onclick=e=>{v.playbackRate=v.playbackRate===1?0.5:1;e.target.textContent=v.playbackRate===1?'half speed':'normal speed'};
+draw();
+</script></div></body></html>
