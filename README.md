@@ -46,3 +46,7 @@ Open `http://127.0.0.1:8765/data/viewer/index.html`. Keep this generated viewer 
 Final configuration, tests and fresh-cache evidence are in `cook/reports/v2/`; `cook/reports/release.json` identifies the submitted candidate. Older reports directly under `cook/reports/` describe the earlier learned prototype, not the final model. Use `cook.submit` for final inference; `cook.train` reproduces the older prototype.
 
 The official starter framework is MIT-licensed. External data and pretrained model provenance are in [models/README.md](models/README.md). [SUBMISSION_READY.md](SUBMISSION_READY.md) lists the form details. No entry has been submitted by this code.
+
+## Latest improvement experiment
+
+An inference-only timing experiment tested 11 alternatives to the final model on the external development match. None improved spellF1, so the v2 submission remains unchanged. Native 25 Hz prediction improved macroF1 slightly but reduced spellF1. The [protocol and outcome](cook/reports/v3/protocol.md) document this negative result; run `python -m cook.timing_experiment` to reproduce the development comparison after preparing the external data. No competition public score was recomputed.

@@ -1,0 +1,23 @@
+{
+  "decision": "retain_v2",
+  "reason": "None of 11 timing/averaging/decoder alternatives beats the frozen baseline on development spellF1.",
+  "development_match": "J03WQQ",
+  "baseline_spellF1": 0.6142281879194631,
+  "native_25hz_spellF1": 0.6093457943925233,
+  "baseline_macroF1": 0.9047474282617607,
+  "native_25hz_macroF1": 0.9052450725259055,
+  "number_of_alternatives": 11,
+  "test_matches_scored_this_round": [],
+  "competition_gt_read": false,
+  "competition_public_score_recomputed": false,
+  "submission_sha256": "08ea56a775c69c5f214fc6b99e9e6b1a238e6729504ee72e49046094b4a5fa10",
+  "submission_unchanged": true,
+  "external_data_audit": {
+    "idsse": "Seven matches total, all previously used; no fresh IDSSE holdout remains.",
+    "idsse_source": "https://api.figshare.com/v2/articles/28196177",
+    "metrica": "Sample games provide synchronized event labels. These are not a direct full-frame possession answer key. No scores were computed and no labels were synthesized for this experiment.",
+    "metrica_source": "https://github.com/metrica-sports/sample-data",
+    "event_definitions": "https://github.com/metrica-sports/sample-data/blob/master/documentation/events-definitions.pdf"
+  },
+  "scope": "Inference-only experiment; no classifier retrained and no weights changed."
+}

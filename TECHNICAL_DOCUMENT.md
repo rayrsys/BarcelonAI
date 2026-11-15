@@ -83,3 +83,7 @@ OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 .venv-barcelonai/bin/python -m cook.sub
 Training also requires unlabelled competition tactical tracking to estimate corruption durations. Fetch URLs and local checksums are recorded by `cook.get_external`. The full feature list, transition matrix and selected configuration are in `cook/reports/v2/frozen_config.json`. Reports directly under `cook/reports/` describe the older prototype; final reports are under `cook/reports/v2/`. Do not use the legacy `cook.train --stage predict` command to generate the final submission.
 
 The public repository excludes competition video, raw tracking, caches and the generated viewer. The organisers' framework and scorer retain their licence and attribution. External pretrained-model provenance is documented in `models/README.md`.
+
+## Follow-up timing experiment
+
+The released model remains version 2. A bounded inference-only experiment compared original 5 Hz interpolation with direct 25 Hz probabilities, optionally averaging predictions after exchanging home and away teams, at three fixed sequence-evidence scales. The existing model won the 12-way development comparison (spellF1 0.614228). Direct 25 Hz prediction reached spellF1 0.609346 and macroF1 0.905245, compared with baseline macroF1 0.904747. No alternative was promoted, no weights were retrained, and no competition labels or reused external test scores were read. The protocol, full candidate scores and submission-hash check are in `cook/reports/v3/`.
